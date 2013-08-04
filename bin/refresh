@@ -1,0 +1,10 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var CoffeeScript = require('coffee-script');
+
+var code = fs.readFileSync(__dirname + '/refresh.coffee', {encoding: 'utf8'});
+
+CoffeeScript.run(code, {
+  filename: __dirname + '/refresh.coffee'
+});

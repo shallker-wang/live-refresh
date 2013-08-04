@@ -1,0 +1,19 @@
+{
+  "name": "live-refresh",
+  "description": "Live refresh",
+  "version": "0.1.0",
+  "author": "Shallker Wang <shallker.wang@profero.com>",
+  "main": "index",
+  "bin": {
+    "refresh": "./bin/refresh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shallker-wang/live-refresh.git"  
+  },
+  "dependencies": {
+    "commander": "*",
+    "ws": "*",
+    "coffee-script": "*"
+  }
+}
