@@ -10,14 +10,14 @@ class Server
   connected: false
 
   option:
-    port: 0
+    port: 35730
 
   status:
     protocol: 'LR'
     version: '1.0'
 
-  constructor: (port = 35730)->
-    @option.port = port
+  constructor: (port)->
+    @option.port = port if port?
     Event.attachTo @
     server = @listen @option.port
     server.on 'connection', @onConnection
