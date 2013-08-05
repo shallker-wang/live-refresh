@@ -16,8 +16,8 @@ refresh .
 ```
 
 ## Features
-* Refresh the page when '.jpg', '.jpeg', '.js', '.html', '.jade', '.coffee', '.stylus' files changed, created or deleted
-* CSS auto reload without refreshing the page
+* Refresh the page when .jpg .jpeg .js .html .jade .coffee .stylus files changed, created or deleted
+* CSS styles auto reload without refreshing the page
 
 ## Install Chrome extension
 [LiveRefresh Chrome Extension](https://github.com/shallker-wang/live-refresh-chrome-extension)
