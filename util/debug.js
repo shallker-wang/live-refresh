@@ -1,11 +1,9 @@
 var debug = new Object;
 
 debug.output = {
-  level: {
-    1: false,
-    2: true,
-    3: true
-  }
+  1: false,
+  2: true,
+  3: true
 }
 
 debug.log = function(masterName, level) {
@@ -13,7 +11,7 @@ debug.log = function(masterName, level) {
     level = 1;
   }
   return function() {
-    if (!debug.output.level[level]) return;
+    if (!debug.output[level]) return;
     var argumentsArray = Array.prototype.slice.call(arguments);
     argumentsArray.unshift(masterName);
     console.log.apply(console, argumentsArray);    
