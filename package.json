@@ -23,7 +23,7 @@
     "coffee-script": "*"
   },
   "scripts": {
-    "test": "npm install should && mocha --recursive --compilers coffee:coffee-script -r should"
+    "test": "mocha --recursive --compilers coffee:coffee-script -r should"
   },
   "license": "MIT"
 }
