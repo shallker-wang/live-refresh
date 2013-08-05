@@ -2,8 +2,11 @@
   "name": "live-refresh",
   "description": "Live refresh",
   "version": "0.1.0",
-  "author": "Shallker Wang <shallker.wang@profero.com>",
-  "main": "index",
+  "author": "Shallker Wang <shallker.wang@gmail.com>",
+  "main": "index.js",
+  "keywords": [
+    "liverefresh", "live-refresh", "livereload", "live-reload", "autoreload"
+  ],
   "bin": {
     "refresh": "./bin/refresh"
   },
@@ -11,9 +14,16 @@
     "type": "git",
     "url": "https://github.com/shallker-wang/live-refresh.git"  
   },
+  "bugs": {
+    "url": "https://github.com/shallker-wang/live-refresh/issues"
+  },
   "dependencies": {
     "commander": "*",
     "ws": "*",
     "coffee-script": "*"
-  }
+  },
+  "scripts": {
+    "test": "npm install should && mocha --recursive --compilers coffee:coffee-script -r should"
+  },
+  "license": "MIT"
 }
