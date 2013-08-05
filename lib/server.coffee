@@ -35,11 +35,14 @@ class Server
 
   onConnection: (socket)=>
     log2 'on connection'
-    @connected = true
     @socket = socket
     @socket.on 'message', @onMessage
     @socket.on 'close', @onClose
     @socket.on 'error', @onError
+    @trigger 'connecting'
+
+  onConnected: ->
+    @connected = true
     @trigger 'connected'
 
   onClose: =>
@@ -57,12 +60,19 @@ class Server
     log2 'on rrror', arguments
     @trigger 'error'
 
+  mismatchProtocol: (protocol)->
+    @trigger 'mismatch-protocol'
+    log2 'protocol does not match', protocol
+
   onMessageHandshake: (message)=>
-    log 'on handshake protocol', message.protocol
+    if message.protocol isnt @status.protocol
+      return @mismatchProtocol message.protocol    
     log 'on handshake version', message.version
+    @onConnected()
     @sendMessage
       type: 'handshake'
       protocol: @status.protocol
       version: @status.version
+
 
 module.exports = Server
