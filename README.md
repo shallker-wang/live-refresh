@@ -11,7 +11,7 @@ sudo npm install live-refresh -g
 ```
 
 ## Quick Start
-Go to project and live refresh current directory.
+Go to project and live refresh current directory:
 ```bash
 cd project-x
 refresh .
