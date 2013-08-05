@@ -24,13 +24,13 @@ describe 'Server construction:', ->
 describe 'Server connection:', ->
   socket = null
 
-  it 'should trigger an event when socket connecting', (done)->
+  it 'should trigger "connecting" when a socket is connecting', (done)->
     server.bind 'connecting', ->
       done()
 
     socket = new WebSocket 'ws://localhost:35730/'
 
-  it 'should decline a wrong handshake protocol', (done)->
+  it 'should decline a wrong protocol on handshake', (done)->
     server.bind 'mismatch-protocol', ->
       done()
 
@@ -39,7 +39,7 @@ describe 'Server connection:', ->
       protocol: 'wrong-protocol'
       version: '1.0'
 
-  it 'should trigger "connected" fater received a correct handshake message', (done)->
+  it 'should trigger "connected" fater received a correct message on handshake', (done)->
     server.bind 'connected', ->
       done()
 

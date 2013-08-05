@@ -22,17 +22,20 @@ describe 'Scanner.isScanableFile():', ->
     scanner.isScanableFile('test.mp3').should.not.be.ok
 
 describe 'Scanner events:', ->
-  it 'should trigger rename event when a new file created', (done)->
-    testFile = scanPath + '/test.css'
+  testFile = scanPath + '/test.css'
 
-    scanner.bind 'rename', ->
+  it 'should trigger "rename" when a css file is created', (done)->
+    onRename = ->
       done()
+      scanner.unbind 'rename', onRename
+      
+    scanner.bind 'rename', onRename
+    fs.writeFileSync testFile, 'body {color: green;}'
 
-    createTestFile = ->
-      fs.writeFileSync testFile, 'body {color: green;}'
-    
-    deleteTestFile = ->
-      fs.unlinkSync testFile
-
-    createTestFile()
-    deleteTestFile()
+  it 'should trigger "rename" when a css file is deleted', (done)->
+    onRename = ->
+      done()
+      scanner.unbind 'rename', onRename
+      
+    scanner.bind 'rename', onRename
+    fs.unlinkSync testFile
