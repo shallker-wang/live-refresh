@@ -3,6 +3,8 @@ live-refresh
 
 LiveReload was too hard for me to understand, so I wrote LiveRefresh.
 
+[![Build Status](https://drone.io/github.com/shallker-wang/live-refresh/status.png)](https://drone.io/github.com/shallker-wang/live-refresh/latest)
+
 ## Installation
 ```
 sudo npm install live-refresh -g
