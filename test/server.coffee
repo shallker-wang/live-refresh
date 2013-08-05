@@ -1,7 +1,14 @@
 Server = require('../lib/server')
-log = require('../util/debug').log('Server Test:', 2)
+debug = require('../util/debug')
 port = require('../util/port')
 WebSocket = require('ws')
+
+debug.output[1] = false
+debug.output[2] = false
+debug.output[3] = false
+debug.output[4] = false
+
+log = debug.log('Server Test:', 2)
 
 server = null
 defaultPort = 35730
