@@ -7,15 +7,23 @@ ScannerAndServerBinder = require('../binder/scanner-server')
 
 class Liverefresh
 
-  option:
-    serverPort: 35730
-    scanPath: './'
+  @option:
+    port: 35730
+    path: './'
 
-  constructor: (path = './')->
-    @option.scanPath = path
-    @server = new Server @option.serverPort
-    @scanner = new Scanner @option.scanPath
+  @refresh: (path = @option.path, port = @option.port)->
+    @server = @listen port
+    @scanner = @watch path
+    @bindScannerAndServer @scanner, @server
+
+  @listen: (port)->
+    new Server port
+
+  @watch: (path)->
+    new Scanner path
+
+  @bindScannerAndServer: (scanner, server)->
     ScannerAndServerBinder @scanner, @server
 
-
-module.exports = Liverefresh
+exports.refresh = (path, port)->
+  Liverefresh.refresh path, port

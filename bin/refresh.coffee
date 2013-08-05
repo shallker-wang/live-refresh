@@ -7,6 +7,6 @@ command
 
 if command.args.length
   path = command.args.shift()
-  return new Liverefresh(path)
+  return Liverefresh.refresh path
 
 command.help()
