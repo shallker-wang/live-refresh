@@ -2,10 +2,11 @@ Scanner = require('../lib/scanner')
 fs = require('fs')
 
 scanner = null
+scanPath = './test'
 
 describe 'Scanner construction:', ->
   it 'should watch the path of given', ->
-    scanner = new Scanner './'
+    scanner = new Scanner scanPath
 
 describe 'Scanner.isScanableFile():', ->
   it 'should scan .js file', ->
@@ -21,21 +22,17 @@ describe 'Scanner.isScanableFile():', ->
     scanner.isScanableFile('test.mp3').should.not.be.ok
 
 describe 'Scanner events:', ->
-  it 'should trigger rename event when a new file created', ->
-    onRename = (fileName)=>
-      console.log 'rename'
-      # fileName.should.eql 'test.css'
-      throw 'test'
-    
-    scanner.bind 'rename', onRename
+  it 'should trigger rename event when a new file created', (done)->
+    testFile = scanPath + '/test.css'
 
-    createFile = ->
-      fs.writeFileSync 'test.css', 'body {color: green;}'
-    
-    deleteFile = ->
-      fs.unlinkSync 'test.css'
+    scanner.bind 'rename', ->
+      done()
 
-    createFile()
-    deleteFile()
-    # createFile.should.throw()
-    # deleteFile().should.throw()
+    createTestFile = ->
+      fs.writeFileSync testFile, 'body {color: green;}'
+    
+    deleteTestFile = ->
+      fs.unlinkSync testFile
+
+    createTestFile()
+    deleteTestFile()
