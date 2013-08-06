@@ -18,7 +18,7 @@ refresh .
 ```
 
 ## Features
-* Refresh the page when .jpg .jpeg .js .html .jade .coffee .stylus files changed, created or deleted
+* Refresh the page when .jpg .jpeg .js .html files changed, created or deleted
 * CSS styles auto reload when .css file changed without refreshing the page
 
 ## Install Chrome extension
