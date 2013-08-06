@@ -21,6 +21,15 @@ refresh .
 * Refresh the page when .jpg .jpeg .js .html files changed, created or deleted
 * CSS styles auto reload when .css file changed without refreshing the page
 
+## Module API
+### refresh(path = './')
+Create a Liverefresh server and watch file changes on the given path.
+
+```javascript
+var liverefresh = require('live-refresh');
+liverefresh.refresh('project/x');
+```
+
 ## Install Chrome extension
 [LiveRefresh Chrome Extension](https://github.com/shallker-wang/live-refresh-chrome-extension)
 
