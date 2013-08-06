@@ -2,7 +2,6 @@ log = require('../util/debug').log('Scanner')
 error = require('../util/debug').error('Scanner')
 Event = require('./event')
 fs = require('fs')
-Notify = require('fs.notify')
 
 class Scanner
 
@@ -45,20 +44,6 @@ class Scanner
         @foldersWatched.push folder
         fs.watch folder, (eventName, fileName)=>
           @onWatch eventName, folder + fileName
-
-  notifyWatch: (path, notify = null)->
-    log 'watch', path
-    path = path.replace(/\/$/, '') + '/'
-    if notify is null
-      notify = new Notify
-      notify.on 'change', @onChange
-    files = fs.readdirSync path
-    files.forEach (file, index)=>
-      if fs.statSync(path + file).isDirectory()
-        if @deepScan then @watch path + file, notify
-      else
-        return unless @isScanableFile file
-        notify.add file
 
   onWatch: (eventName, filePath)=>
     log 'onWatch', eventName, filePath
