@@ -2,6 +2,7 @@ log = require('../util/debug').log('Scanner')
 error = require('../util/debug').error('Scanner')
 Event = require('./event')
 fs = require('fs')
+Notify = require('fs.notify')
 
 class Scanner
 
@@ -10,10 +11,13 @@ class Scanner
     'jpeg',
     'css',
     'js',
-    'html',
-    'jade',
-    'coffee',
-    'stylus'
+    'html'
+  ]
+
+  foldersWatched: []
+  foldersIgnored: [
+    '.git',
+    'node_modules'
   ]
 
   option:
@@ -21,39 +25,58 @@ class Scanner
 
   constructor: (path = './')->
     log 'constructor'
-    @path = path.replace(/\/$/, '') + '/'
     Event.attachTo @
-    @watch @path
+    @root = path.replace(/\/$/, '') + '/'
+    @watch @root
 
-  watch: (path)->
+  watch: (folder)->
+    log 'watch', folder
+    folder = folder.replace(/\/$/, '') + '/'
+    files = fs.readdirSync folder
+    files.forEach (file, index)=>
+      if fs.statSync(folder + file).isDirectory()
+        return if ~@foldersIgnored.indexOf(file)
+        # ignore hidden folder
+        return if file.match(/^\./) isnt null
+        if @option.deepScan then @watch folder + file
+      else
+        return unless @isScanableFile file
+        return if ~@foldersWatched.indexOf(folder)
+        @foldersWatched.push folder
+        fs.watch folder, (eventName, fileName)=>
+          @onWatch eventName, folder + fileName
+
+  notifyWatch: (path, notify = null)->
     log 'watch', path
     path = path.replace(/\/$/, '') + '/'
-    fs.watch path, {interval: 1000}, @onWatch
+    if notify is null
+      notify = new Notify
+      notify.on 'change', @onChange
+    files = fs.readdirSync path
+    files.forEach (file, index)=>
+      if fs.statSync(path + file).isDirectory()
+        if @deepScan then @watch path + file, notify
+      else
+        return unless @isScanableFile file
+        notify.add file
 
-    # deep watch
-    if @option.deepScan
-      files = fs.readdirSync path
-      files.forEach (file, index)=>
-        if fs.statSync(path + file).isDirectory()
-          @watch(path + file)
-
-  onWatch: (eventName, fileName)=>
-    log 'onWatch', eventName, fileName
-    return unless @isScanableFile fileName
+  onWatch: (eventName, filePath)=>
+    log 'onWatch', eventName, filePath
+    return unless @isScanableFile filePath
     switch eventName
-      when 'change' then @onChange fileName
-      when 'rename' then @onRename fileName
+      when 'change' then @onChange filePath
+      when 'rename' then @onRename filePath
 
   isScanableFile: (fileName)->
     ~@extensions.indexOf fileName.split('.').pop()
 
-  onChange: (fileName)=>
-    log 'onChange', fileName
-    @trigger 'change', [fileName]
+  onChange: (filePath)=>
+    log 'onChange', filePath
+    @trigger 'change', [filePath]
 
-  onRename: (fileName)=>
-    log 'onRename', fileName
-    @trigger 'rename', [fileName]
+  onRename: (filePath)=>
+    log 'onRename', filePath
+    @trigger 'rename', [filePath]
 
 
 module.exports = Scanner
