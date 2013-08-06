@@ -25,5 +25,5 @@ class Liverefresh
   @bindScannerAndServer: (scanner, server)->
     ScannerAndServerBinder @scanner, @server
 
-exports.refresh = (path, port)->
-  Liverefresh.refresh path, port
+
+module.exports = Liverefresh
