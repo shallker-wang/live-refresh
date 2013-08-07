@@ -1,10 +1,15 @@
 #!/usr/bin/env node
 
-var fs = require('fs');
-var CoffeeScript = require('coffee-script');
+require("coffee-script")
+var commander = require('commander');
+var liverefresh = require('../lib/liverefresh');
 
-var code = fs.readFileSync(__dirname + '/refresh.coffee', {encoding: 'utf8'});
+commander
+  .version(liverefresh.version)
+  .parse(process.argv);
 
-CoffeeScript.run(code, {
-  filename: __dirname + '/refresh.coffee'
-});
+if (commander.args.length) {
+  return liverefresh.refresh(commander.args.shift());
+}
+
+commander.help();
