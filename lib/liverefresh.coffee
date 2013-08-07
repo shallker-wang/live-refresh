@@ -16,7 +16,7 @@ class Liverefresh
   @refresh: (path = @option.path, port = @option.port)->
     @listen port, (server)=>
       @watch path, (scanner)=>
-        @bindScannerAndServer server, scanner
+        ScannerAndServerBinder scanner, server
 
   @listen: (port, callback)->
     Port.isTaken port, (taken)=>
@@ -25,9 +25,5 @@ class Liverefresh
 
   @watch: (path, callback)->
     callback(new Scanner path)
-
-  @bindScannerAndServer: (scanner, server)->
-    ScannerAndServerBinder @scanner, @server
-
 
 module.exports = Liverefresh

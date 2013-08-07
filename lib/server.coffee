@@ -1,4 +1,4 @@
-WebsocketServer = require('ws').server
+WebsocketServer = require('ws').Server
 Event = require('./event')
 Port = require('../util/port')
 log = require('../util/debug').log('Server')
