@@ -1,9 +1,9 @@
-var fs = require('fs');
-var CoffeeScript = require('coffee-script');
+require("coffee-script")
+var liverefresh = require('./lib/liverefresh')
 
-var coffeeFile = __dirname + '/index.coffee';
+exports.version = '1.1.0';
 
-CoffeeScript.run(
-  fs.readFileSync(coffeeFile, {encoding: 'utf8'}),
-  {filename: coffeeFile}
-);
+exports.refresh = function(path) {
+  path = path || './';
+  liverefresh.refresh(path);  
+}
