@@ -20,6 +20,18 @@ exports.log = function(masterName, outputLevel) {
   }
 }
 
+exports.warn = function(masterName, outputLevel) {
+  if (typeof outputLevel === 'undefined') {
+    outputLevel = 2;
+  }
+  return function() {
+    if (!debug.output[outputLevel]) return;
+    var args = Array.prototype.slice.call(arguments);
+    args.unshift(masterName);
+    console.warn.apply(console, args);
+  }
+}
+
 exports.error = function(masterName) {
   return function(message) {
     err = new Error(message)
