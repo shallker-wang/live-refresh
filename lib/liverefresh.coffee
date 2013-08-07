@@ -1,7 +1,9 @@
+Event = require('./event')
 Server = require('./server')
 Scanner = require('./scanner')
-Event = require('./event')
+Port = require('../util/port')
 log = require('../util/debug').log('Liverefresh')
+warn = require('../util/debug').warn('Liverefresh')
 error = require('../util/debug').error('Liverefresh')
 ScannerAndServerBinder = require('../binder/scanner-server')
 
@@ -12,15 +14,17 @@ class Liverefresh
     path: './'
 
   @refresh: (path = @option.path, port = @option.port)->
-    @server = @listen port
-    @scanner = @watch path
-    @bindScannerAndServer @scanner, @server
+    @listen port, (server)=>
+      @watch path, (scanner)=>
+        @bindScannerAndServer server, scanner
 
-  @listen: (port)->
-    new Server port
+  @listen: (port, callback)->
+    Port.isTaken port, (taken)=>
+      return warn "port #{port} is taken" if taken
+      callback(new Server port)
 
-  @watch: (path)->
-    new Scanner path
+  @watch: (path, callback)->
+    callback(new Scanner path)
 
   @bindScannerAndServer: (scanner, server)->
     ScannerAndServerBinder @scanner, @server

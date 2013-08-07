@@ -1,8 +1,10 @@
+WebsocketServer = require('ws').server
+Event = require('./event')
+Port = require('../util/port')
 log = require('../util/debug').log('Server')
 log2 = require('../util/debug').log('Server', 2)
+warn = require('../util/debug').warn('Server')
 error = require('../util/debug').error('Server')
-Event = require('./event')
-WS = require('ws')
 
 class Server
 
@@ -19,12 +21,14 @@ class Server
   constructor: (port)->
     @option.port = port if port?
     Event.attachTo @
-    server = @listen @option.port
-    server.on 'connection', @onConnection
+    @listen @option.port, (server)=>
+      server.on 'connection', @onConnection
+      log2 'listen on', @option.port
 
-  listen: (port)->
-    log2 'listen on', port
-    new WS.Server port: port
+  listen: (port, callback)->
+    Port.isTaken port, (taken)=>
+      return error "port #{port} is taken" if taken
+      callback(new WebsocketServer port: port)
 
   sendMessage: (message)->
     return error 'disconnected' unless @connected
@@ -73,6 +77,5 @@ class Server
       type: 'handshake'
       protocol: @status.protocol
       version: @status.version
-
 
 module.exports = Server
