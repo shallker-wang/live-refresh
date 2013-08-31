@@ -1,10 +1,9 @@
+info = require('dever').debug('Server')
+debug = require('dever').debug('Server')
+error = require('dever').error('Server')
+eventy = require('eventy')
 WebsocketServer = require('ws').Server
-Event = require('./event')
 Port = require('../util/port')
-log = require('../util/debug').log('Server')
-log2 = require('../util/debug').log('Server', 2)
-warn = require('../util/debug').warn('Server')
-error = require('../util/debug').error('Server')
 
 class Server
 
@@ -20,10 +19,10 @@ class Server
 
   constructor: (port)->
     @option.port = port if port?
-    Event.attachTo @
+    eventy @
     @listen @option.port, (server)=>
       server.on 'connection', @onConnection
-      log2 'listen on', @option.port
+      info 'listen on', @option.port
 
   listen: (port, callback)->
     Port.isTaken port, (taken)=>
@@ -35,10 +34,10 @@ class Server
     return error 'invalid socket' unless @socket
     message = JSON.stringify message
     @socket.send message
-    log2 'sendMessage', message
+    info 'sendMessage', message
 
   onConnection: (socket)=>
-    log2 'on connection'
+    info 'on connection'
     @socket = socket
     @socket.on 'message', @onMessage
     @socket.on 'close', @onClose
@@ -50,28 +49,28 @@ class Server
     @trigger 'connected'
 
   onClose: =>
-    log2 'on close'
+    info 'on close'
     @connected = false
     @trigger 'disconnected'
 
   onMessage: (message)=>
-    log 'onMessage', message, typeof message
+    debug 'onMessage', message, typeof message
     message = JSON.parse message
     switch message.type
       when 'handshake' then @onMessageHandshake message
 
   onError: =>
-    log2 'on rrror', arguments
+    info 'on rrror', arguments
     @trigger 'error'
 
   mismatchProtocol: (protocol)->
     @trigger 'mismatch-protocol'
-    log2 'protocol does not match', protocol
+    info 'protocol does not match', protocol
 
   onMessageHandshake: (message)=>
     if message.protocol isnt @status.protocol
       return @mismatchProtocol message.protocol    
-    log 'on handshake version', message.version
+    debug 'on handshake version', message.version
     @onConnected()
     @sendMessage
       type: 'handshake'

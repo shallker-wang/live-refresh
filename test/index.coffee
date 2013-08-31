@@ -1,8 +1,6 @@
 index = require('../index')
 
 describe 'Require index', ->
-  it 'should export .version', ->
-    index.version.should.be.a('string')
+  it 'should export .version'
 
-  it 'should export .refresh()', ->
-    index.refresh.should.be.a('function')
+  it 'should export .refresh()'

@@ -1,8 +1,8 @@
 {
   "name": "live-refresh",
   "description": "Live refresh",
-  "version": "1.1.1",
-  "author": "Shallker Wang <shallker.wang@gmail.com>",
+  "version": "2.0.0",
+  "author": "Shallker Wang <shallker.wang@profero.com>",
   "main": "index.js",
   "keywords": [
     "liverefresh", "live-refresh", "livereload", "live-reload", "autoreload"
@@ -18,8 +18,14 @@
     "url": "https://github.com/shallker-wang/live-refresh/issues"
   },
   "dependencies": {
-    "commander": "*",
     "ws": "*",
+    "dever": "*",
+    "eventy": "*",
+    "commander": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
     "coffee-script": "*"
   },
   "scripts": {

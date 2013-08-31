@@ -1,15 +1,14 @@
 #!/usr/bin/env node
 
-require("coffee-script")
 var commander = require('commander');
-var liverefresh = require('../lib/liverefresh');
+var liverefresh = require('../index');
 
 commander
   .version(liverefresh.version)
   .parse(process.argv);
 
 if (commander.args.length) {
-  return liverefresh.refresh(commander.args.shift());
+  return liverefresh.watch(commander.args.shift());
 }
 
 commander.help();

@@ -1,6 +1,6 @@
-log = require('../util/debug').log('Scanner')
-error = require('../util/debug').error('Scanner')
-Event = require('./event')
+debug = require('dever').debug('Scanner')
+error = require('dever').error('Scanner')
+eventy = require('eventy')
 fs = require('fs')
 
 class Scanner
@@ -23,13 +23,13 @@ class Scanner
     deepScan: true
 
   constructor: (path = './')->
-    log 'constructor'
-    Event.attachTo @
+    debug 'constructor'
+    eventy @
     @root = path.replace(/\/$/, '') + '/'
     @watch @root
 
   watch: (folder)->
-    log 'watch', folder
+    debug 'watch', folder
     folder = folder.replace(/\/$/, '') + '/'
     files = fs.readdirSync folder
     files.forEach (file, index)=>
@@ -46,7 +46,7 @@ class Scanner
           @onWatch eventName, folder + fileName
 
   onWatch: (eventName, filePath)=>
-    log 'onWatch', eventName, filePath
+    debug 'onWatch', eventName, filePath
     return unless @isScanableFile filePath
     switch eventName
       when 'change' then @onChange filePath
@@ -56,11 +56,11 @@ class Scanner
     ~@extensions.indexOf fileName.split('.').pop()
 
   onChange: (filePath)=>
-    log 'onChange', filePath
+    debug 'onChange', filePath
     @trigger 'change', [filePath]
 
   onRename: (filePath)=>
-    log 'onRename', filePath
+    debug 'onRename', filePath
     @trigger 'rename', [filePath]
 
 
